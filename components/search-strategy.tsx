@@ -410,7 +410,7 @@ export function SearchStrategy() {
 
         {/* Start with */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-muted-foreground shrink-0 w-[80px]">Start with</span>
+          <span className="text-xs font-medium text-foreground shrink-0 w-[80px]">Start with</span>
           <div className="flex items-center gap-1 flex-wrap">
             {layers.slice(0, 1).map((layer, index) => (
               <LayerChip
@@ -429,7 +429,7 @@ export function SearchStrategy() {
         {/* If none found, expand to */}
         {layers.length > 1 && (
           <div className="flex items-start gap-2 flex-wrap">
-            <span className="text-xs text-muted-foreground shrink-0 w-[80px] pt-0.5">If none found,<br />expand to</span>
+            <span className="text-xs text-muted-foreground/70 shrink-0 w-[80px] pt-0.5 leading-snug">If none found,<br />expand to</span>
             <div className="flex items-center gap-1 flex-wrap">
               {layers.slice(1).map((layer, i) => (
                 <span key={layer.id} className="flex items-center gap-1">
@@ -496,9 +496,9 @@ export function SearchStrategy() {
 
         <div className="border-t border-border/60" />
 
-        {/* Prefer */}
+        {/* Priority */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-muted-foreground shrink-0 w-[80px]">Prefer</span>
+          <span className="text-xs text-muted-foreground shrink-0 w-[80px]">Priority</span>
           <div className="flex items-center gap-3 flex-wrap">
             {(["answer-bank", "supporting", "balanced"] as Priority[]).map((val) => {
               const label = val === "answer-bank" ? "Answer Bank" : val === "supporting" ? "Supporting Materials" : "Balanced"
@@ -570,7 +570,7 @@ export function SearchStrategy() {
               className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               <Plus className="h-3 w-3" />
-              Add exclusion
+              Exclude specific tags or scopes
             </button>
           </div>
         </div>
@@ -587,7 +587,7 @@ export function SearchStrategy() {
           verbatim={verbatim}
         />
         <p className="text-[11px] text-muted-foreground/60 px-0.5">
-          We convert your selections into structured search filters.
+          Your selections are applied as structured search filters.
         </p>
       </div>
 
@@ -595,16 +595,17 @@ export function SearchStrategy() {
       <div className="space-y-3">
         <button
           onClick={() => setShowStructured((v) => !v)}
-          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline transition-colors"
+          className="flex items-center gap-1 text-[11px] text-muted-foreground/60 hover:text-muted-foreground underline-offset-2 hover:underline transition-colors"
         >
           View Structured Rules
+          <span className="text-[10px] text-muted-foreground/40">(optional)</span>
           {showStructured ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
         </button>
 
         {showStructured && (
           <div className="space-y-3 rounded-md border border-border bg-card p-3">
-            <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Layers are evaluated in order. If no matches are found, the next layer is used.
+            <p className="text-[11px] text-muted-foreground/70 leading-relaxed">
+              We start with the most specific scope and expand only if no matches are found.
             </p>
 
             <div className="space-y-0">
