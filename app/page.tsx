@@ -15,11 +15,8 @@ export default function Page() {
           <Sparkles className="mr-2 h-4 w-4" />
           Generate Answers
         </Button>
-        <p className="text-sm text-muted-foreground">
-          Click to open the Generate Answers modal
-        </p>
       </div>
-      <GenerateAnswersModal open={open} onOpenChange={setOpen} />
+      <GenerateAnswersModal open={open} onOpenChange={setOpen} count={2} />
     </main>
   )
 }
