@@ -278,41 +278,43 @@ export const SearchStrategy = forwardRef<SearchStrategyHandle>(function SearchSt
       <div className="rounded-md border border-border bg-secondary/40 px-4 py-3 space-y-3">
 
         {/* Sources */}
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">Sources</p>
-          <div className="flex items-center gap-5">
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id="src-ab"
-                checked={useAnswerBank}
-                onCheckedChange={(v) => { setUseAnswerBank(!!v); mark() }}
-              />
-              <Label htmlFor="src-ab" className="text-xs cursor-pointer">Answer Bank</Label>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="h-3 w-3 text-muted-foreground/50 cursor-help shrink-0" />
-                </TooltipTrigger>
-                <TooltipContent side="top" className="max-w-[200px]">
-                  Sourced from pre-approved Q&A pairs in your Answer Bank.
-                </TooltipContent>
-              </Tooltip>
-            </div>
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id="src-sm"
-                checked={useSupportingMaterials}
-                onCheckedChange={(v) => { setUseSupportingMaterials(!!v); mark() }}
-              />
-              <Label htmlFor="src-sm" className="text-xs cursor-pointer">Supporting Materials</Label>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="h-3 w-3 text-muted-foreground/50 cursor-help shrink-0" />
-                </TooltipTrigger>
-                <TooltipContent side="top" className="max-w-[200px]">
-                  Sourced from previously-completed questionnaires or other supporting documents.
-                </TooltipContent>
-              </Tooltip>
-            </div>
+
+          {/* Answer Bank */}
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="src-ab"
+              checked={useAnswerBank}
+              onCheckedChange={(v) => { setUseAnswerBank(!!v); mark() }}
+            />
+            <Label htmlFor="src-ab" className="text-xs cursor-pointer">Answer Bank</Label>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="h-3 w-3 text-muted-foreground/50 cursor-help shrink-0" />
+              </TooltipTrigger>
+              <TooltipContent side="top" className="max-w-[200px]">
+                Sourced from pre-approved Q&A pairs in your Answer Bank.
+              </TooltipContent>
+            </Tooltip>
+          </div>
+
+          {/* Supporting Materials checkbox */}
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="src-sm"
+              checked={useSupportingMaterials}
+              onCheckedChange={(v) => { setUseSupportingMaterials(!!v); mark() }}
+            />
+            <Label htmlFor="src-sm" className="text-xs cursor-pointer">Supporting Materials</Label>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="h-3 w-3 text-muted-foreground/50 cursor-help shrink-0" />
+              </TooltipTrigger>
+              <TooltipContent side="top" className="max-w-[200px]">
+                Sourced from previously-completed questionnaires or other supporting documents.
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
 
@@ -428,7 +430,7 @@ export const SearchStrategy = forwardRef<SearchStrategyHandle>(function SearchSt
               <Info className="h-3 w-3 text-muted-foreground/50 cursor-help shrink-0" />
             </TooltipTrigger>
             <TooltipContent side="top" className="max-w-[260px] space-y-1.5">
-              <p>We search in this order. If no matches are found, we expand to the next level.</p>
+              <p>We search in this order. If no matches are found at a level, we expand to the next.</p>
               <p>Defaults are auto-generated from your submission intake — ordered from most specific (e.g. Fund + Vehicle) to least specific (Firmwide), so answers are always as contextually relevant as possible.</p>
             </TooltipContent>
           </Tooltip>
@@ -517,10 +519,19 @@ export const SearchStrategy = forwardRef<SearchStrategyHandle>(function SearchSt
               <Lock className="h-2.5 w-2.5" />
               Firmwide
             </span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info className="h-3 w-3 text-muted-foreground/40 cursor-help shrink-0" />
+              </TooltipTrigger>
+              <TooltipContent side="top" className="max-w-[260px] space-y-1.5">
+                <p className="font-medium">Final fallback level — always last.</p>
+                <p>Firmwide answers are canonical across all funds and structures. If no matches are found at any prior level, the engine falls back here. Firmwide content is never overridden by more specific levels.</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
 
-        {/* Add Layer */}
+        {/* Add Level */}
         <Popover open={addLayerOpen} onOpenChange={setAddLayerOpen}>
           <PopoverTrigger asChild>
             <Button
@@ -529,12 +540,12 @@ export const SearchStrategy = forwardRef<SearchStrategyHandle>(function SearchSt
               className="h-7 border-dashed text-xs text-muted-foreground hover:text-foreground hover:border-primary/30"
             >
               <Plus className="mr-1 h-3 w-3" />
-              Add Layer
+              Add Level
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-44 p-1" align="start">
             {availableToAdd.length === 0 ? (
-              <p className="px-2 py-1.5 text-xs text-muted-foreground">All layers added</p>
+              <p className="px-2 py-1.5 text-xs text-muted-foreground">All levels added</p>
             ) : (
               availableToAdd.map((p) => (
                 <button
@@ -553,13 +564,13 @@ export const SearchStrategy = forwardRef<SearchStrategyHandle>(function SearchSt
       {/* ── Exclude ── */}
       <div className="space-y-1.5">
         <div className="flex items-center gap-1.5">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">Exclude</p>
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">Exclude from all Search Levels</p>
           <Tooltip>
             <TooltipTrigger asChild>
               <Info className="h-3 w-3 text-muted-foreground/50 cursor-help shrink-0" />
             </TooltipTrigger>
             <TooltipContent side="top" className="max-w-[240px]">
-              Exclude specific tags or scopes from all search layers. Excluded content will never be returned, regardless of how specific the match is.
+              Exclude specific tags or scopes from all search levels. Excluded content will never be returned, regardless of how specific the match is.
             </TooltipContent>
           </Tooltip>
         </div>
