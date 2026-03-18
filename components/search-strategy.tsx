@@ -275,7 +275,7 @@ export function SearchStrategy() {
 
         {/* Sources */}
         <div className="space-y-1.5">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">Sources</p>
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">Sources test</p>
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-2">
               <Checkbox
